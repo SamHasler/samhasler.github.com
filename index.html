@@ -1,0 +1,315 @@
+
+<HTML>
+
+<HEAD>
+	<TITLE>Sam Hasler's Info</TITLE>
+	<link rel="openid.server" href="http://web.archive.org/web/20090320224711/http://www.myopenid.com/server" />
+	<link rel="openid.delegate" href="http://web.archive.org/web/20090320224711/http://sam.hasler.myopenid.com/" />
+	<meta http-equiv="X-XRDS-Location" content="http://www.myopenid.com/xrds?username=sam.hasler.myopenid.com" />
+	<style type="text/css">
+		body {
+			width: 820px;
+		}
+		#header_left	{
+			float:left;
+			width:33%;
+		}
+		.header_right {
+			float:right;
+			padding-top: 20px;
+			padding-right: 2%;
+			vertical-align:top;
+		}
+		#identity {
+			margin: 20px 10px 0 -8px;
+			padding-top: 0px;
+			padding-left: 2px;
+			padding-bottom: 2px;
+			border: 1px dashed lightgrey;
+			font-size: 75%;
+		}
+		#identity h3 {	margin-top: 0;	}			
+		#identity ul{	padding: 0;	}
+		#identity li{	list-style-type: none;	}
+
+		H2 {clear: both;}
+		
+		/* Remove amazon sort control, showing x of n, and footers */
+		div.hd_input,
+		div#wdgt_brdr > div:first-child,
+		div.wdgt_ft {display:none;}
+	</style>
+</HEAD>
+
+<BODY>
+<!-- BEGIN WAYBACK TOOLBAR INSERT -->
+
+<script type="text/javascript" src="http://staticweb.archive.org/js/disclaim-element.js" ></script>
+<script type="text/javascript" src="http://staticweb.archive.org/js/graph-calc.js" ></script>
+<script type="text/javascript" src="http://staticweb.archive.org/jflot/jquery.min.js" ></script>
+<script type="text/javascript">
+//<![CDATA[
+var firstDate = 820454400000;
+var lastDate = 1356998399999;
+var wbPrefix = "http://web.archive.org/web/";
+var wbCurrentUrl = "http:\/\/sam.haslers.info\/";
+
+var curYear = -1;
+var curMonth = -1;
+var yearCount = 18;
+var firstYear = 1996;
+var imgWidth=450;
+var yearImgWidth = 25;
+var monthImgWidth = 2;
+var trackerVal = "none";
+var displayDay = "20";
+var displayMonth = "Mar";
+var displayYear = "2009";
+var prettyMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+function showTrackers(val) {
+	if(val == trackerVal) {
+		return;
+	}
+	if(val == "inline") {
+		document.getElementById("displayYearEl").style.color = "#ec008c";
+		document.getElementById("displayMonthEl").style.color = "#ec008c";
+		document.getElementById("displayDayEl").style.color = "#ec008c";		
+	} else {
+		document.getElementById("displayYearEl").innerHTML = displayYear;
+		document.getElementById("displayYearEl").style.color = "#ff0";
+		document.getElementById("displayMonthEl").innerHTML = displayMonth;
+		document.getElementById("displayMonthEl").style.color = "#ff0";
+		document.getElementById("displayDayEl").innerHTML = displayDay;
+		document.getElementById("displayDayEl").style.color = "#ff0";
+	}
+   document.getElementById("wbMouseTrackYearImg").style.display = val;
+   document.getElementById("wbMouseTrackMonthImg").style.display = val;
+   trackerVal = val;
+}
+function getElementX2(obj) {
+	var thing = jQuery(obj);
+	if((thing == undefined) 
+			|| (typeof thing == "undefined") 
+			|| (typeof thing.offset == "undefined")) {
+		return getElementX(obj);
+	}
+	return Math.round(thing.offset().left);
+}
+function trackMouseMove(event,element) {
+
+   var eventX = getEventX(event);
+   var elementX = getElementX2(element);
+   var xOff = eventX - elementX;
+	if(xOff < 0) {
+		xOff = 0;
+	} else if(xOff > imgWidth) {
+		xOff = imgWidth;
+	}
+   var monthOff = xOff % yearImgWidth;
+
+   var year = Math.floor(xOff / yearImgWidth);
+	var yearStart = year * yearImgWidth;
+   var monthOfYear = Math.floor(monthOff / monthImgWidth);
+   if(monthOfYear > 11) {
+       monthOfYear = 11;
+   }
+   // 1 extra border pixel at the left edge of the year:
+   var month = (year * 12) + monthOfYear;
+   var day = 1;
+	if(monthOff % 2 == 1) {
+		day = 15;
+	}
+	var dateString = 
+		zeroPad(year + firstYear) + 
+		zeroPad(monthOfYear+1,2) +
+		zeroPad(day,2) + "000000";
+
+	var monthString = prettyMonths[monthOfYear];
+	document.getElementById("displayYearEl").innerHTML = year + 1996;
+	document.getElementById("displayMonthEl").innerHTML = monthString;
+	// looks too jarring when it changes..
+	//document.getElementById("displayDayEl").innerHTML = zeroPad(day,2);
+
+	var url = wbPrefix + dateString + '/' +  wbCurrentUrl;
+	document.getElementById('wm-graph-anchor').href = url;
+
+   //document.getElementById("wmtbURL").value="evX("+eventX+") elX("+elementX+") xO("+xOff+") y("+year+") m("+month+") monthOff("+monthOff+") DS("+dateString+") Moy("+monthOfYear+") ms("+monthString+")";
+   if(curYear != year) {
+       var yrOff = year * yearImgWidth;
+       document.getElementById("wbMouseTrackYearImg").style.left = yrOff + "px";
+       curYear = year;
+   }
+   if(curMonth != month) {
+       var mtOff = year + (month * monthImgWidth) + 1;
+       document.getElementById("wbMouseTrackMonthImg").style.left = mtOff + "px";
+       curMonth = month;
+   }
+}
+//]]>
+</script>
+
+<style type="text/css">body{margin-top:0!important;padding-top:0!important;min-width:800px!important;}#wm-ipp a:hover{text-decoration:underline!important;}</style>
+<div id="wm-ipp" style="display:none; position:relative;padding:0 5px;min-height:70px;min-width:800px; z-index:9000;">
+<div id="wm-ipp-inside" style="position:fixed;padding:0!important;margin:0!important;width:97%;min-width:780px;border:5px solid #000;border-top:none;background-image:url(http://staticweb.archive.org/images/toolbar/wm_tb_bk_trns.png);text-align:center;-moz-box-shadow:1px 1px 3px #333;-webkit-box-shadow:1px 1px 3px #333;box-shadow:1px 1px 3px #333;font-size:11px!important;font-family:'Lucida Grande','Arial',sans-serif!important;">
+   <table style="border-collapse:collapse;margin:0;padding:0;width:100%;"><tbody><tr>
+   <td style="padding:10px;vertical-align:top;min-width:110px;">
+   <a href="http://wayback.archive.org/web/" title="Wayback Machine home page" style="background-color:transparent;border:none;"><img src="http://staticweb.archive.org/images/toolbar/wayback-toolbar-logo.png" alt="Wayback Machine" width="110" height="39" border="0"/></a>
+   </td>
+   <td style="padding:0!important;text-align:center;vertical-align:top;width:100%;">
+
+       <table style="border-collapse:collapse;margin:0 auto;padding:0;width:570px;"><tbody><tr>
+       <td style="padding:3px 0;" colspan="2">
+       <form target="_top" method="get" action="http://wayback.archive.org/web/form-submit.jsp" name="wmtb" id="wmtb" style="margin:0!important;padding:0!important;"><input type="text" name="url" id="wmtbURL" value="http://sam.haslers.info/" style="width:400px;font-size:11px;font-family:'Lucida Grande','Arial',sans-serif;" onfocus="javascript:this.focus();this.select();" /><input type="hidden" name="type" value="replay" /><input type="hidden" name="date" value="20090320224711" /><input type="submit" value="Go" style="font-size:11px;font-family:'Lucida Grande','Arial',sans-serif;margin-left:5px;" /><span id="wm_tb_options" style="display:block;"></span></form>
+       </td>
+       <td style="vertical-align:bottom;padding:5px 0 0 0!important;" rowspan="2">
+           <table style="border-collapse:collapse;width:110px;color:#99a;font-family:'Helvetica','Lucida Grande','Arial',sans-serif;"><tbody>
+			
+           <!-- NEXT/PREV MONTH NAV AND MONTH INDICATOR -->
+           <tr style="width:110px;height:16px;font-size:10px!important;">
+           	<td style="padding-right:9px;font-size:11px!important;font-weight:bold;text-transform:uppercase;text-align:right;white-space:nowrap;overflow:visible;" nowrap="nowrap">
+               
+		                <a href="http://web.archive.org/web/20090119083649/http://sam.haslers.info/" style="text-decoration:none;color:#33f;font-weight:bold;background-color:transparent;border:none;" title="19 Jan 2009"><strong>JAN</strong></a>
+		                
+               </td>
+               <td id="displayMonthEl" style="background:#000;color:#ff0;font-size:11px!important;font-weight:bold;text-transform:uppercase;width:34px;height:15px;padding-top:1px;text-align:center;" title="You are here: 22:47:11 Mar 20, 2009">MAR</td>
+				<td style="padding-left:9px;font-size:11px!important;font-weight:bold;text-transform:uppercase;white-space:nowrap;overflow:visible;" nowrap="nowrap">
+               
+		                <a href="http://web.archive.org/web/20090524012650/http://sam.haslers.info/" style="text-decoration:none;color:#33f;font-weight:bold;background-color:transparent;border:none;" title="24 May 2009"><strong>MAY</strong></a>
+		                
+               </td>
+           </tr>
+
+           <!-- NEXT/PREV CAPTURE NAV AND DAY OF MONTH INDICATOR -->
+           <tr>
+               <td style="padding-right:9px;white-space:nowrap;overflow:visible;text-align:right!important;vertical-align:middle!important;" nowrap="nowrap">
+               
+		                <a href="http://web.archive.org/web/20090119083649/http://sam.haslers.info/" title="8:36:49 Jan 19, 2009" style="background-color:transparent;border:none;"><img src="http://staticweb.archive.org/images/toolbar/wm_tb_prv_on.png" alt="Previous capture" width="14" height="16" border="0" /></a>
+		                
+               </td>
+               <td id="displayDayEl" style="background:#000;color:#ff0;width:34px;height:24px;padding:2px 0 0 0;text-align:center;font-size:24px;font-weight: bold;" title="You are here: 22:47:11 Mar 20, 2009">20</td>
+				<td style="padding-left:9px;white-space:nowrap;overflow:visible;text-align:left!important;vertical-align:middle!important;" nowrap="nowrap">
+               
+		                <a href="http://web.archive.org/web/20090524012650/http://sam.haslers.info/" title="1:26:50 May 24, 2009" style="background-color:transparent;border:none;"><img src="http://staticweb.archive.org/images/toolbar/wm_tb_nxt_on.png" alt="Next capture" width="14" height="16" border="0"/></a>
+		                
+			    </td>
+           </tr>
+
+           <!-- NEXT/PREV YEAR NAV AND YEAR INDICATOR -->
+           <tr style="width:110px;height:13px;font-size:9px!important;">
+				<td style="padding-right:9px;font-size:11px!important;font-weight: bold;text-align:right;white-space:nowrap;overflow:visible;" nowrap="nowrap">
+               
+		                <a href="http://web.archive.org/web/20080316212453/http://sam.haslers.info/" style="text-decoration:none;color:#33f;font-weight:bold;background-color:transparent;border:none;" title="16 Mar 2008"><strong>2008</strong></a>
+		                
+               </td>
+               <td id="displayYearEl" style="background:#000;color:#ff0;font-size:11px!important;font-weight: bold;padding-top:1px;width:34px;height:13px;text-align:center;" title="You are here: 22:47:11 Mar 20, 2009">2009</td>
+				<td style="padding-left:9px;font-size:11px!important;font-weight: bold;white-space:nowrap;overflow:visible;" nowrap="nowrap">
+               
+                       2010
+                       
+				</td>
+           </tr>
+           </tbody></table>
+       </td>
+
+       </tr>
+       <tr>
+       <td style="vertical-align:middle;padding:0!important;">
+           <a href="http://wayback.archive.org/web/20090320224711*/http://sam.haslers.info/" style="color:#33f;font-size:11px;font-weight:bold;background-color:transparent;border:none;" title="See a list of every capture for this URL"><strong>10 captures</strong></a>
+           <div style="margin:0!important;padding:0!important;color:#666;font-size:9px;padding-top:2px!important;white-space:nowrap;" title="Timespan for captures of this URL">16 Jan 08 - 24 May 09</div>
+       </td>
+       <td style="padding:0!important;">
+       <a style="position:relative; white-space:nowrap; width:450px;height:27px;" href="" id="wm-graph-anchor">
+       <div id="wm-ipp-sparkline" style="position:relative; white-space:nowrap; width:450px;height:27px;background-color:#fff;cursor:pointer;border-right:1px solid #ccc;" title="Explore captures for this URL">
+			<img id="sparklineImgId" style="position:absolute; z-index:9012; top:0px; left:0px;"
+				onmouseover="showTrackers('inline');" 
+				onmouseout="showTrackers('none');"
+				onmousemove="trackMouseMove(event,this)"
+				alt="sparklines"
+				width="450"
+				height="27"
+				border="0"
+				src="http://wayback.archive.org/web/jsp/graph.jsp?graphdata=450_27_1996:-1:000000000000_1997:-1:000000000000_1998:-1:000000000000_1999:-1:000000000000_2000:-1:000000000000_2001:-1:000000000000_2002:-1:000000000000_2003:-1:000000000000_2004:-1:000000000000_2005:-1:000000000000_2006:-1:000000000000_2007:-1:000000000000_2008:-1:101010101101_2009:2:101010000000_2010:-1:000000000000_2011:-1:000000000000_2012:-1:000000000000"></img>
+			<img id="wbMouseTrackYearImg" 
+				style="display:none; position:absolute; z-index:9010;"
+				width="25" 
+				height="27"
+				border="0"
+				src="http://staticweb.archive.org/images/toolbar/transp-yellow-pixel.png"></img>
+			<img id="wbMouseTrackMonthImg"
+				style="display:none; position:absolute; z-index:9011; " 
+				width="2"
+				height="27" 
+				border="0"
+				src="http://staticweb.archive.org/images/toolbar/transp-red-pixel.png"></img>
+       </div>
+		</a>
+
+       </td>
+       </tr></tbody></table>
+   </td>
+   <td style="text-align:right;padding:5px;width:65px;font-size:11px!important;">
+       <a href="javascript:;" onclick="document.getElementById('wm-ipp').style.display='none';" style="display:block;padding-right:18px;background:url(http://staticweb.archive.org/images/toolbar/wm_tb_close.png) no-repeat 100% 0;color:#33f;font-family:'Lucida Grande','Arial',sans-serif;margin-bottom:23px;background-color:transparent;border:none;" title="Close the toolbar">Close</a>
+       <a href="http://faq.web.archive.org/" style="display:block;padding-right:18px;background:url(http://staticweb.archive.org/images/toolbar/wm_tb_help.png) no-repeat 100% 0;color:#33f;font-family:'Lucida Grande','Arial',sans-serif;background-color:transparent;border:none;" title="Get some help using the Wayback Machine">Help</a>
+   </td>
+   </tr></tbody></table>
+
+</div>
+</div>
+<script type="text/javascript">
+ var wmDisclaimBanner = document.getElementById("wm-ipp");
+ if(wmDisclaimBanner != null) {
+   disclaimElement(wmDisclaimBanner);
+ }
+</script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+
+<div id="header_left">
+	<H1>Sam Hasler's Info</H1>
+</div>
+<div class="header_right">
+	<a href="http://web.archive.org/web/20090320224711/http://www.new.facebook.com/people/Sam_Hasler/1186278361" title="Sam Hasler's Facebook profile" target=_TOP><img src="http://web.archive.org/web/20090320224711im_/http://badge.facebook.com/badge/1186278361.78.1952986529.png" border=0 alt="Sam Hasler's Facebook profile"></a>
+</div>
+<div id="identity" class="header_right">
+	<h3>me</h3>
+	<ul>
+		<li><a href="http://web.archive.org/web/20090320224711/http://www.facebook.com/people/Sam_Hasler/1186278361" rel="me">Facebook</a></li>
+		<li><a rel="me wibble" href="http://web.archive.org/web/20090320224711/http://stackoverflow.com/users/2541">Stackoverflow</a></li>
+		<li><a rel="me" href="http://web.archive.org/web/20090320224711/http://www.google.com/s2/profiles/118347584040055508675#about">Google Profile</a></li>
+		<li><a rel="me" href="http://web.archive.org/web/20090320224711/http://twitter.com/SamHasler">Twitter</a></li>
+		<hr>
+		<li><a rel="me" href="http://web.archive.org/web/20090320224711/http://foswiki.org/Main/SamHasler">Foswiki</a></li>
+		<li><a rel="me nofollow" href="http://web.archive.org/web/20090320224711/http://twiki.org/cgi-bin/view/Main/SamHasler">TWiki</a></li>		
+	</ul>
+	<a href="http://web.archive.org/web/20090320224711/http://www.plaxo.com/opensocialgraph.py?url=http%3A%2F%2Fsam.haslers.info%2F&output=&verbose=">confirm my identity</a>
+</div>
+<div class="header_right">
+	<iframe src="http://web.archive.org/web/20090320224711/http://www.google.com/talk/service/badge/Show?tk=z01q6amlq95eahnuimuqnvefp2tol8hgr8clljfu6kn4e7udprf5l5rc2u7f923o5vkevs8bka8jacekf6fkggij6ebolnlrbnvsddg94cjsap2lra1ltu8oljj92tu6dgfn4r2m954gupfl59pj87pd4smjo60f8rd6jbemd&w=200&h=60" frameborder="0" allowtransparency="true" width="200" height="60"></iframe>
+</div>
+
+<H2>Photos</H2>
+<table style="width:auto;">
+<tr><td>
+		<a href="http://web.archive.org/web/20090320224711/http://sam.haslers.info/images/Algarve%20Beach%202c_crop.JPG">
+		<img width="800" height="159" src="http://web.archive.org/web/20090320224711im_/http://lh4.google.com/sam.hasler/RzZV1FYhG1I/AAAAAAAAAEo/7T25L7XT4Ok/s800/Algarve%20Beach%202c_crop.JPG" /></a>
+	</td>
+</tr>
+<tr><td style="font-family:arial,sans-serif; font-size:11px; text-align:right">From <a href="http://web.archive.org/web/20090320224711/http://picasaweb.google.com/sam.hasler/Algarve2007/photo#5131383195901696850">Algarve 2007</a></td></tr>
+</table>
+<H2>Stuff I'd like</H2>
+<p>
+	If you're wondering what to get me for Christmas/my birthday, here's some stuff I'd like.
+	Just don't forget to check no-one has already bought the item by checking it's still on my wishlist:
+	<a href="http://web.archive.org/web/20090320224711/http://www.amazon.co.uk/gp/registry/wishlist/V3LL1V300RGD">Books - Fiction</a>,
+	<a href="http://web.archive.org/web/20090320224711/http://www.amazon.co.uk/gp/registry/wishlist/2K50APXUWZ6NG">Books - Non-Fiction</a>,
+	<a href="http://web.archive.org/web/20090320224711/http://www.amazon.co.uk/gp/registry/wishlist/2DGCHHDM9O6FT">Games</a>,
+	<a href="http://web.archive.org/web/20090320224711/http://www.amazon.co.uk/gp/registry/wishlist/2VCTNQR9ML1SG">Misc</a>
+</p>
+
+<div style="margin:6px;">
+	<!-- 1x1 Narrow	White	Non Fiction	--><SCRIPT charset="utf-8" type="text/javascript" src="http://web.archive.org/web/20090320224711js_/http://ws.amazon.co.uk/widgets/q?ServiceVersion=20070822&MarketPlace=GB&ID=V20070822/GB/amawid-21/8004/71272c40-c705-4acc-bc2e-a952a2211294"> </SCRIPT> <NOSCRIPT><A HREF="http://web.archive.org/web/20090320224711/http://ws.amazon.co.uk/widgets/q?ServiceVersion=20070822&MarketPlace=GB&ID=V20070822%2FGB%2Famawid-21%2F8004%2F71272c40-c705-4acc-bc2e-a952a2211294&Operation=NoScript">Amazon.co.uk Widgets</A></NOSCRIPT>
+	<!-- 3x2 Wide	White	Fiction		--><SCRIPT charset="utf-8" type="text/javascript" src="http://web.archive.org/web/20090320224711js_/http://ws.amazon.co.uk/widgets/q?ServiceVersion=20070822&MarketPlace=GB&ID=V20070822/GB/amawid-21/8004/fd067273-01ff-494e-9b37-eb2a868b326c"> </SCRIPT> <NOSCRIPT><A HREF="http://web.archive.org/web/20090320224711/http://ws.amazon.co.uk/widgets/q?ServiceVersion=20070822&MarketPlace=GB&ID=V20070822%2FGB%2Famawid-21%2F8004%2Ffd067273-01ff-494e-9b37-eb2a868b326c&Operation=NoScript">Amazon.co.uk Widgets</A></NOSCRIPT>
+	<!-- 3x1 Wide	White	Games		--><SCRIPT charset="utf-8" type="text/javascript" src="http://web.archive.org/web/20090320224711js_/http://ws.amazon.co.uk/widgets/q?ServiceVersion=20070822&MarketPlace=GB&ID=V20070822/GB/amawid-21/8004/39cb2e37-0909-48dd-86d9-d3ff916ec503"> </SCRIPT> <NOSCRIPT><A HREF="http://web.archive.org/web/20090320224711/http://ws.amazon.co.uk/widgets/q?ServiceVersion=20070822&MarketPlace=GB&ID=V20070822%2FGB%2Famawid-21%2F8004%2F39cb2e37-0909-48dd-86d9-d3ff916ec503&Operation=NoScript">Amazon.co.uk Widgets</A></NOSCRIPT>
+</div>
+</BODY>
+</HTML>
