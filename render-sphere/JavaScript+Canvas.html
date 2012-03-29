@@ -34,6 +34,7 @@ body {
 #imageTemp { position: absolute; top: 0px; left: 0px; }
 </style>
 <!--[if IE]><script src="excanvas.compiled.js"></script><![endif]-->
+<script src="Stats.js"></script>
 <script>
 	var texture = "earth1024x1024.jpg";
 	var param = { size: 200
@@ -241,7 +242,7 @@ body {
 
 		// Turn. Increment/decrement to turn clockwise/anti-clockwise
 		fc--;
-		gCtx.putImageData(CanvasData, 0, 0, tv, th);
+		gCtx.putImageData(CanvasData, 0, 0);
 		if (0 == fc%5){
 			div_fps.innerHTML = ("Fps:" +	rendtime/5).substring(0,8);
 			rendtime = 0;
@@ -308,6 +309,16 @@ body {
 	function go() {
 		div_fps = document.getElementById("fps");
 		createSphere(texture);
+
+		var stats = new Stats();
+		// Align top-left
+		stats.getDomElement().style.position = 'absolute';
+		stats.getDomElement().style.left = '0px';
+		stats.getDomElement().style.top = '0px';
+		document.body.appendChild(stats.getDomElement());
+		setInterval(function () {
+		  stats.update();
+		}, 1000 / 60);
 	}
 </script>
 </head>
@@ -319,6 +330,6 @@ body {
 			</canvas>
 			<div id="fps"></div>
 		</div> 
-	</div> 
+	</div>
 </body>
 </html>
