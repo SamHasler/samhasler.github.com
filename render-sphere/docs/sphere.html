@@ -1,0 +1,448 @@
+<!DOCTYPE html>  <html> <head>   <title>sphere.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               sphere.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p><strong>Sphere</strong> renders a mathematically perfect textured sphere.
+It calculates the surface of the sphere instead of approximating it with triangles.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/*jshint laxcomma: true, laxbreak: true, browser: true */</span>
+<span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+
+  <span class="kd">var</span> <span class="nx">opts</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">tilt</span><span class="o">:</span> <span class="mi">40</span>
+             <span class="p">,</span> <span class="nx">turn</span><span class="o">:</span> <span class="mi">20</span>
+             <span class="p">,</span> <span class="nx">fpr</span> <span class="o">:</span> <span class="mi">128</span>
+             <span class="p">};</span>
+
+</pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>frame count, current angle of rotation. inc/dec to turn.</p>             </td>             <td class="code">               <div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">frame_count</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">gCanvas</span><span class="p">,</span> <span class="nx">gCtx</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">gImage</span><span class="p">,</span> <span class="nx">gCtxImg</span><span class="p">;</span>
+
+</pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Variable to hold the size of the canvas</p>             </td>             <td class="code">               <div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">size</span><span class="p">;</span>
+
+  <span class="kd">var</span> <span class="nx">canvasImageData</span><span class="p">,</span> <span class="nx">textureImageData</span><span class="p">;</span>
+
+</pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Number of frames for one complete rotation.</p>             </td>             <td class="code">               <div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">fpr</span> <span class="o">=</span> <span class="mi">800</span><span class="p">;</span>
+  
+</pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Constants for indexing dimentions</p>             </td>             <td class="code">               <div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">X</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nx">Y</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nx">Z</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span>
+
+</pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>vertical and horizontal position on canvas</p>             </td>             <td class="code">               <div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">v</span><span class="p">,</span> <span class="nx">h</span><span class="p">;</span>
+
+  <span class="kd">var</span> <span class="nx">textureWidth</span><span class="p">,</span> <span class="nx">textureHeight</span><span class="p">;</span>
+
+  <span class="kd">var</span> <span class="nx">hs</span><span class="o">=</span><span class="mi">30</span><span class="p">;</span>            <span class="c1">// Horizontal scale of viewing area</span>
+  <span class="kd">var</span> <span class="nx">vs</span><span class="o">=</span><span class="mi">30</span><span class="p">;</span>            <span class="c1">// Vertical scale of viewing area</span>
+
+</pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>NB    The viewing area is an abstract rectangle in the 3d world and is not
+   the same as the canvas used to display the image.</p>             </td>             <td class="code">               <div class="highlight"><pre>
+
+  <span class="kd">var</span> <span class="nx">F</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">];</span>    <span class="c1">// Focal point of viewer</span>
+  <span class="kd">var</span> <span class="nx">S</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">0</span><span class="p">];</span>    <span class="c1">// Centre of sphere/planet</span>
+
+  <span class="kd">var</span> <span class="nx">r</span><span class="o">=</span><span class="mi">12</span><span class="p">;</span>            <span class="c1">// Radius of sphere/planet</span>
+
+</pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>Distance of the viewing area from the focal point. This seems
+to give strange results if it is not equal to S[Y]. It should
+theoreticaly be changable but hs &amp; vs can still be used along
+with r to change how large the sphere apears on the canvas.
+HOWEVER, the values of hs, vs, S[Y], f &amp; r MUST NOT BE TOO BIG
+as this will result in overflow errors which are not traped
+and do not stop the script but will result in incorrect
+displaying of the texture upon the sphere.</p>             </td>             <td class="code">               <div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>
+
+
+</pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>There may be a solution to the above problem by finding L in
+a slightly different way.
+Since the problem is equivelent to finding the intersection
+in 2D space of a line and a circle then each view area pixel
+and associated vector can be used define a 2D plane in the 3D
+space that 'contains' the vector S-F which is the focal point
+to centre of the sphere.</p>
+
+<p>This is essentialy the same problem but I belive/hope it will
+not result in the same exact solution. I have hunch that the
+math will not result in such big numbers. Since this abstract
+plane will be spinning, it may be posilbe to use the symetry
+of the arangement to reuse 1/4 of the calculations.</p>             </td>             <td class="code">               <div class="highlight"><pre>
+
+
+
+</pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Variables to hold rotations about the 3 axis</p>             </td>             <td class="code">               <div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">RX</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="nx">RY</span><span class="p">,</span><span class="nx">RZ</span><span class="p">;</span>
+</pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>Temp variables to hold them whilst rendering so they won't get updated.</p>             </td>             <td class="code">               <div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">rx</span><span class="p">,</span><span class="nx">ry</span><span class="p">,</span><span class="nx">rz</span><span class="p">;</span>
+
+  <span class="kd">var</span> <span class="nx">a</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">b</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">b2</span><span class="p">;</span>            <span class="c1">// b squared</span>
+  <span class="kd">var</span> <span class="nx">bx</span><span class="o">=</span><span class="nx">F</span><span class="p">[</span><span class="nx">X</span><span class="p">]</span><span class="o">-</span><span class="nx">S</span><span class="p">[</span><span class="nx">X</span><span class="p">];</span>    <span class="c1">// = 0 for current values of F and S</span>
+  <span class="kd">var</span> <span class="nx">by</span><span class="o">=</span><span class="nx">F</span><span class="p">[</span><span class="nx">Y</span><span class="p">]</span><span class="o">-</span><span class="nx">S</span><span class="p">[</span><span class="nx">Y</span><span class="p">];</span>
+  <span class="kd">var</span> <span class="nx">bz</span><span class="o">=</span><span class="nx">F</span><span class="p">[</span><span class="nx">Z</span><span class="p">]</span><span class="o">-</span><span class="nx">S</span><span class="p">[</span><span class="nx">Z</span><span class="p">];</span>    <span class="c1">// = 0 for current values of F and S</span>
+
+</pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>c = Fx^2 + Sx^2 -2FxSx + Fy^2 + Sy^2 -2FySy + Fz^2 + Sz^2 -2FzSz - r^2
+for current F and S this means c = Sy^2 - r^2</p>             </td>             <td class="code">               <div class="highlight"><pre>
+
+  <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">F</span><span class="p">[</span><span class="nx">X</span><span class="p">]</span><span class="o">*</span><span class="nx">F</span><span class="p">[</span><span class="nx">X</span><span class="p">]</span> <span class="o">+</span> <span class="nx">S</span><span class="p">[</span><span class="nx">X</span><span class="p">]</span><span class="o">*</span><span class="nx">S</span><span class="p">[</span><span class="nx">X</span><span class="p">]</span>
+        <span class="o">+</span> <span class="nx">F</span><span class="p">[</span><span class="nx">Y</span><span class="p">]</span><span class="o">*</span><span class="nx">F</span><span class="p">[</span><span class="nx">Y</span><span class="p">]</span> <span class="o">+</span> <span class="nx">S</span><span class="p">[</span><span class="nx">Y</span><span class="p">]</span><span class="o">*</span><span class="nx">S</span><span class="p">[</span><span class="nx">Y</span><span class="p">]</span>
+        <span class="o">+</span> <span class="nx">F</span><span class="p">[</span><span class="nx">Z</span><span class="p">]</span><span class="o">*</span><span class="nx">F</span><span class="p">[</span><span class="nx">Z</span><span class="p">]</span> <span class="o">+</span> <span class="nx">S</span><span class="p">[</span><span class="nx">Z</span><span class="p">]</span><span class="o">*</span><span class="nx">S</span><span class="p">[</span><span class="nx">Z</span><span class="p">]</span>
+        <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="nx">F</span><span class="p">[</span><span class="nx">X</span><span class="p">]</span><span class="o">*</span><span class="nx">S</span><span class="p">[</span><span class="nx">X</span><span class="p">]</span> <span class="o">+</span> <span class="nx">F</span><span class="p">[</span><span class="nx">Y</span><span class="p">]</span><span class="o">*</span><span class="nx">S</span><span class="p">[</span><span class="nx">Y</span><span class="p">]</span> <span class="o">+</span> <span class="nx">F</span><span class="p">[</span><span class="nx">Z</span><span class="p">]</span><span class="o">*</span><span class="nx">S</span><span class="p">[</span><span class="nx">Z</span><span class="p">])</span>
+        <span class="o">-</span> <span class="nx">r</span><span class="o">*</span><span class="nx">r</span>
+        <span class="p">;</span>
+
+  <span class="kd">var</span> <span class="nx">c4</span> <span class="o">=</span> <span class="nx">c</span><span class="o">*</span><span class="mi">4</span><span class="p">;</span>        <span class="c1">// save a bit of time maybe during rendering</span>
+
+  <span class="kd">var</span> <span class="nx">s</span><span class="p">;</span>
+
+  <span class="kd">var</span> <span class="nx">m1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>double m2 = 0;</p>             </td>             <td class="code">               <div class="highlight"><pre>
+
+</pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p>The following are use to calculate the vector of the current pixel to be
+drawn from the focus position F</p>             </td>             <td class="code">               <div class="highlight"><pre>
+
+  <span class="kd">var</span> <span class="nx">hs_ch</span><span class="p">;</span>                <span class="c1">// horizontal scale divided by canvas width</span>
+  <span class="kd">var</span> <span class="nx">vs_cv</span><span class="p">;</span>                <span class="c1">// vertical scale divided by canvas height</span>
+  <span class="kd">var</span> <span class="nx">hhs</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="nx">hs</span><span class="p">;</span>    <span class="c1">// half horizontal scale</span>
+  <span class="kd">var</span> <span class="nx">hvs</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="nx">vs</span><span class="p">;</span>    <span class="c1">// half vertical scale</span>
+
+  <span class="kd">var</span> <span class="nx">V</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>    <span class="c1">// vector for storing direction of each pixel from F</span>
+  <span class="kd">var</span> <span class="nx">L</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>    <span class="c1">// Location vector from S that pixel &#39;hits&#39; sphere</span>
+
+  <span class="kd">var</span> <span class="nx">VY2</span><span class="o">=</span><span class="nx">f</span><span class="o">*</span><span class="nx">f</span><span class="p">;</span>            <span class="c1">// V[Y] ^2  NB May change if F changes</span>
+
+  
+      <span class="kd">var</span> <span class="nx">rotCache</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="kd">function</span> <span class="nx">calcL</span> <span class="p">(</span><span class="nx">lx</span><span class="p">,</span><span class="nx">ly</span><span class="p">,</span><span class="nx">rz</span><span class="p">){</span>
+</pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <pre><code> var L = new Array(3);
+ L[X]=lx*Math.cos(rz)-ly*Math.sin(rz);
+ L[Y]=lx*Math.sin(rz)+ly*Math.cos(rz);
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>
+
+      <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">+</span> <span class="nx">lx</span> <span class="o">+</span><span class="s2">&quot;,&quot;</span><span class="o">+</span> <span class="nx">ly</span> <span class="o">+</span><span class="s2">&quot;,&quot;</span><span class="o">+</span> <span class="nx">rx</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">rotCache</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">==</span> <span class="kc">null</span><span class="p">){</span>
+        <span class="nx">rotCache</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">rotCache</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">rotCache</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    
+
+  <span class="kd">var</span> <span class="nx">calculateVector</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">h</span><span class="p">,</span><span class="nx">v</span><span class="p">){</span>
+</pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <p>Calculate vector from focus point (Origin, so can ignor) to pixel</p>             </td>             <td class="code">               <div class="highlight"><pre>
+    <span class="nx">V</span><span class="p">[</span><span class="nx">X</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="nx">hs_ch</span><span class="o">*</span><span class="nx">h</span><span class="p">)</span><span class="o">-</span><span class="nx">hhs</span><span class="p">;</span>
+
+</pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <p>V[Y] always the same as view frame doesn't mov</p>             </td>             <td class="code">               <div class="highlight"><pre>
+    <span class="nx">V</span><span class="p">[</span><span class="nx">Z</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="nx">vs_cv</span><span class="o">*</span><span class="nx">v</span><span class="p">)</span><span class="o">-</span><span class="nx">hvs</span><span class="p">;</span>
+
+</pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <p>Vector (L) from S where m*V (m is an unknown scalar) intersects
+surface of sphere is as follows</p>
+
+<pre>
+L = F + mV - S
+
+   ,-------.
+  /         \ -----m------
+ |     S<-L->|       <-V->F
+  \         /
+   `-------'
+
+L and m are unknown so find magnitude of vectors as the magnitude
+of L is the radius of the sphere
+
+|L| = |F + mV - S| = r
+
+Can be rearranged to form a quadratic
+
+0 = am&sup2; +bm + c
+
+and solved to find m, using the following formula
+
+<pre>
+             ___________
+m = ( -b &PlusMinus; \/(b&sup2;) - 4ac ) /2a
+</pre>
+
+<p>r = |F + mV - S|
+      <strong><em>_</em><em>_</em><em>_</em><em>_</em><em>_</em><em>_</em><em>_</em><em>_</em><em>_</em><em>_</em><em>_</em><em>_</em><em>_</em><em>_</em><em>_</em>_</strong>
+r = v(Fx + mVx -Sx)&sup2; + (Fy + mVy -Sy)&sup2; + (Fz + mVz -Sz)&sup2;</p>
+
+<p>r&sup2; = (Fx + mVx -Sx)&sup2; + (Fy + mVy -Sy)&sup2; + (Fz + mVz -Sz)&sup2;</p>
+
+<p>r&sup2; = (Fx + mVx -Sx)&sup2; + (Fy + mVy -Sy)&sup2; + (Fz + mVz -Sz)&sup2;</p>
+
+<p>0 = Fx&sup2; + FxVxm -FxSx + FxVxm + Vx&sup2;m&sup2; -SxVxm -SxFx -SxVxm + Sx&sup2;
+   +Fy&sup2; + FyVym -FySy + FyVym + Vy&sup2;m&sup2; -SyVym -SyFy -SyVym + Sy&sup2;
+   +Fz&sup2; + FzVzm -FzSz + FzVzm + Vz&sup2;m&sup2; -SzVzm -SzFz -SzVzm + Sz&sup2; - r&sup2;</p>
+
+<p>0 = Vx&sup2;m&sup2;          + FxVxm + FxVxm -2SxVxm    + Fx&sup2; -FxSx -SxFx + Sx&sup2;
+   +Vy&sup2;m&sup2;          + FyVym + FyVym -2SyVym    + Fy&sup2; -FySy -SyFy + Sy&sup2;
+   +Vz&sup2;m&sup2;          + FzVzm + FzVzm -2SzVzm    + Fz&sup2; -FzSz -SzFz + Sz&sup2; - r&sup2;</p>
+
+<p>0 = (Vx&sup2; + Vy&sup2; + Vz&sup2;)m&sup2;  + (FxVx + FxVx -2SxVx)m    + Fx&sup2; - 2FxSx + Sx&sup2;
+                         + (FyVy + FyVy -2SyVy)m    + Fy&sup2; - 2FySy + Sy&sup2;
+                         + (FzVz + FzVz -2SzVz)m    + Fz&sup2; - 2FzSz + Sz&sup2; - r&sup2;</p>
+
+<p>0 = |Vz|m&sup2;  + (FxVx + FxVx -2SxVx)m    + |F| - 2FxSx + |S|
+            + (FyVy + FyVy -2SyVy)m          - 2FySy
+            + (FyVy + FyVy -2SyVy)m          - 2FySy       - r&sup2;</p>
+
+<p>a = |Vz|
+b = 
+c = Fx&sup2; + Sx&sup2; -2FxSx + Fy&sup2; + Sy&sup2; -2FySy + Fz&sup2; + Sz&sup2; -2FzSz - r&sup2;
+for current F and S this means c = Sy&sup2; - r&sup2;
+</pre></p>             </td>             <td class="code">               <div class="highlight"><pre>
+
+</pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <p>Where a, b and c are as in the code.
+Only the solution for the negative square root term is needed as the
+closest intersection is wanted. The other solution to m would give
+the intersection of the 'back' of the sphere.</p>             </td>             <td class="code">               <div class="highlight"><pre>
+
+    <span class="nx">a</span><span class="o">=</span><span class="nx">V</span><span class="p">[</span><span class="nx">X</span><span class="p">]</span><span class="o">*</span><span class="nx">V</span><span class="p">[</span><span class="nx">X</span><span class="p">]</span><span class="o">+</span><span class="nx">VY2</span><span class="o">+</span><span class="nx">V</span><span class="p">[</span><span class="nx">Z</span><span class="p">]</span><span class="o">*</span><span class="nx">V</span><span class="p">[</span><span class="nx">Z</span><span class="p">];</span>
+
+
+    <span class="nx">s</span><span class="o">=</span><span class="p">(</span><span class="nx">b2</span><span class="o">-</span><span class="nx">a</span><span class="o">*</span><span class="nx">c4</span><span class="p">);</span>    <span class="c1">// the square root term</span>
+
+</pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <p>if s is negative then there are no solutions to m and the
+sphere is not visible on the current pixel on the canvas
+so only draw a pixel if the sphere is visable
+0 is a special case as it is the 'edge' of the sphere as there
+is only one solution. (I have never seen it happen though)
+of the two solutions m1 &amp; m2 the nearest is m1, m2 being the
+far side of the sphere.</p>             </td>             <td class="code">               <div class="highlight"><pre>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">s</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+
+      <span class="nx">m1</span> <span class="o">=</span> <span class="p">((</span><span class="o">-</span><span class="nx">b</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="nx">s</span><span class="p">)))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nx">a</span><span class="p">);</span>
+
+      <span class="nx">L</span><span class="p">[</span><span class="nx">X</span><span class="p">]</span><span class="o">=</span><span class="nx">m1</span><span class="o">*</span><span class="nx">V</span><span class="p">[</span><span class="nx">X</span><span class="p">];</span>        <span class="c1">//    bx+m1*V[X];</span>
+      <span class="nx">L</span><span class="p">[</span><span class="nx">Y</span><span class="p">]</span><span class="o">=</span><span class="nx">by</span><span class="o">+</span><span class="p">(</span><span class="nx">m1</span><span class="o">*</span><span class="nx">V</span><span class="p">[</span><span class="nx">Y</span><span class="p">]);</span>
+      <span class="nx">L</span><span class="p">[</span><span class="nx">Z</span><span class="p">]</span><span class="o">=</span><span class="nx">m1</span><span class="o">*</span><span class="nx">V</span><span class="p">[</span><span class="nx">Z</span><span class="p">];</span>        <span class="c1">//    bz+m1*V[Z];</span>
+
+</pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <p>Do a couple of rotations on L</p>             </td>             <td class="code">               <div class="highlight"><pre>
+
+      <span class="kd">var</span> <span class="nx">lx</span><span class="o">=</span><span class="nx">L</span><span class="p">[</span><span class="nx">X</span><span class="p">];</span>
+      <span class="kd">var</span> <span class="nx">srz</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">rz</span><span class="p">);</span>
+      <span class="kd">var</span> <span class="nx">crz</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">rz</span><span class="p">);</span>
+      <span class="nx">L</span><span class="p">[</span><span class="nx">X</span><span class="p">]</span><span class="o">=</span><span class="nx">lx</span><span class="o">*</span><span class="nx">crz</span><span class="o">-</span><span class="nx">L</span><span class="p">[</span><span class="nx">Y</span><span class="p">]</span><span class="o">*</span><span class="nx">srz</span><span class="p">;</span>
+      <span class="nx">L</span><span class="p">[</span><span class="nx">Y</span><span class="p">]</span><span class="o">=</span><span class="nx">lx</span><span class="o">*</span><span class="nx">srz</span><span class="o">+</span><span class="nx">L</span><span class="p">[</span><span class="nx">Y</span><span class="p">]</span><span class="o">*</span><span class="nx">crz</span><span class="p">;</span>
+
+</pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <pre><code> calcL(lx, L[Y], rz);
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>
+
+      <span class="kd">var</span> <span class="nx">lz</span><span class="p">;</span>
+      <span class="nx">lz</span><span class="o">=</span><span class="nx">L</span><span class="p">[</span><span class="nx">Z</span><span class="p">];</span>
+      <span class="kd">var</span> <span class="nx">sry</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">ry</span><span class="p">);</span>
+      <span class="kd">var</span> <span class="nx">cry</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">ry</span><span class="p">);</span>
+      <span class="nx">L</span><span class="p">[</span><span class="nx">Z</span><span class="p">]</span><span class="o">=</span><span class="nx">lz</span><span class="o">*</span><span class="nx">cry</span><span class="o">-</span><span class="nx">L</span><span class="p">[</span><span class="nx">Y</span><span class="p">]</span><span class="o">*</span><span class="nx">sry</span><span class="p">;</span>
+      <span class="nx">L</span><span class="p">[</span><span class="nx">Y</span><span class="p">]</span><span class="o">=</span><span class="nx">lz</span><span class="o">*</span><span class="nx">sry</span><span class="o">+</span><span class="nx">L</span><span class="p">[</span><span class="nx">Y</span><span class="p">]</span><span class="o">*</span><span class="nx">cry</span><span class="p">;</span>
+
+</pre></div>             </td>           </tr>                               <tr id="section-23">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-23">&#182;</a>               </div>               <pre><code>calcL(lz, L[Y], ry);
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>
+
+</pre></div>             </td>           </tr>                               <tr id="section-24">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-24">&#182;</a>               </div>               <p>Calculate the position that this location on the sphere
+coresponds to on the texture</p>             </td>             <td class="code">               <div class="highlight"><pre>
+
+      <span class="kd">var</span> <span class="nx">lh</span> <span class="o">=</span> <span class="nx">textureWidth</span> <span class="o">+</span> <span class="nx">textureWidth</span> <span class="o">*</span> <span class="p">(</span>  <span class="nb">Math</span><span class="p">.</span><span class="nx">atan2</span><span class="p">(</span><span class="nx">L</span><span class="p">[</span><span class="nx">Y</span><span class="p">],</span><span class="nx">L</span><span class="p">[</span><span class="nx">X</span><span class="p">])</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">);</span>
+
+</pre></div>             </td>           </tr>                               <tr id="section-25">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-25">&#182;</a>               </div>               <p>%textureHeight at end to get rid of south pole bug. probaly means that one
+pixel may be a color from the opposite pole but as long as the
+poles are the same color this won't be noticed.</p>             </td>             <td class="code">               <div class="highlight"><pre>
+
+      <span class="kd">var</span> <span class="nx">lv</span> <span class="o">=</span> <span class="nx">textureWidth</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">textureHeight</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="p">(</span><span class="nx">textureHeight</span><span class="o">*</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">acos</span><span class="p">(</span><span class="nx">L</span><span class="p">[</span><span class="nx">Z</span><span class="p">]</span><span class="o">/</span><span class="nx">r</span><span class="p">)</span><span class="o">/</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">)</span><span class="o">%</span><span class="nx">textureHeight</span><span class="p">));</span>
+      <span class="k">return</span> <span class="p">{</span><span class="nx">lv</span><span class="o">:</span><span class="nx">lv</span><span class="p">,</span><span class="nx">lh</span><span class="o">:</span><span class="nx">lh</span><span class="p">};</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="p">};</span>
+
+  
+  <span class="cm">/**</span>
+<span class="cm">   * Create the sphere function opject</span>
+<span class="cm">   */</span>
+  <span class="kd">var</span> <span class="nx">sphere</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+
+    <span class="kd">var</span> <span class="nx">textureData</span> <span class="o">=</span> <span class="nx">textureImageData</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">canvasData</span> <span class="o">=</span> <span class="nx">canvasImageData</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+
+    <span class="kd">var</span> <span class="nx">copyFnc</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">canvasData</span><span class="p">.</span><span class="nx">splice</span><span class="p">){</span>
+</pre></div>             </td>           </tr>                               <tr id="section-26">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-26">&#182;</a>               </div>               <p>2012-04-19 splice on canvas data not supported in any current browser</p>             </td>             <td class="code">               <div class="highlight"><pre>
+      <span class="nx">copyFnc</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">idxC</span><span class="p">,</span> <span class="nx">idxT</span><span class="p">){</span>
+        <span class="nx">canvasData</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">idxC</span><span class="p">,</span> <span class="mi">4</span>  <span class="p">,</span> <span class="nx">textureData</span><span class="p">[</span><span class="nx">idxT</span> <span class="o">+</span> <span class="mi">0</span><span class="p">]</span>
+                                  <span class="p">,</span> <span class="nx">textureData</span><span class="p">[</span><span class="nx">idxT</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                                  <span class="p">,</span> <span class="nx">textureData</span><span class="p">[</span><span class="nx">idxT</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
+                                  <span class="p">,</span> <span class="mi">255</span><span class="p">);</span>
+      <span class="p">};</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">copyFnc</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">idxC</span><span class="p">,</span> <span class="nx">idxT</span><span class="p">){</span>
+        <span class="nx">canvasData</span><span class="p">[</span><span class="nx">idxC</span> <span class="o">+</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nx">textureData</span><span class="p">[</span><span class="nx">idxT</span> <span class="o">+</span> <span class="mi">0</span><span class="p">];</span>
+        <span class="nx">canvasData</span><span class="p">[</span><span class="nx">idxC</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">textureData</span><span class="p">[</span><span class="nx">idxT</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+        <span class="nx">canvasData</span><span class="p">[</span><span class="nx">idxC</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nx">textureData</span><span class="p">[</span><span class="nx">idxT</span> <span class="o">+</span> <span class="mi">2</span><span class="p">];</span>
+        <span class="nx">canvasData</span><span class="p">[</span><span class="nx">idxC</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
+      <span class="p">};</span>
+    <span class="p">}</span>
+    
+    <span class="kd">var</span> <span class="nx">getVector</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+      <span class="kd">var</span> <span class="nx">cache</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">size</span><span class="o">*</span><span class="nx">size</span><span class="p">);</span>
+      <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">pixel</span><span class="p">){</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">cache</span><span class="p">[</span><span class="nx">pixel</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">){</span>
+          <span class="kd">var</span> <span class="nx">v</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">pixel</span> <span class="o">/</span> <span class="nx">size</span><span class="p">);</span>
+          <span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">pixel</span> <span class="o">-</span> <span class="nx">v</span> <span class="o">*</span> <span class="nx">size</span><span class="p">;</span>
+          <span class="nx">cache</span><span class="p">[</span><span class="nx">pixel</span><span class="p">]</span> <span class="o">=</span> <span class="nx">calculateVector</span><span class="p">(</span><span class="nx">h</span><span class="p">,</span><span class="nx">v</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">cache</span><span class="p">[</span><span class="nx">pixel</span><span class="p">];</span>
+      <span class="p">};</span>
+    <span class="p">})();</span>
+    
+    <span class="kd">var</span> <span class="nx">posDelta</span> <span class="o">=</span> <span class="nx">textureWidth</span><span class="o">/</span><span class="p">(</span><span class="mi">20</span><span class="o">*</span><span class="mi">1000</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">firstFramePos</span> <span class="o">=</span> <span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">())</span> <span class="o">*</span> <span class="nx">posDelta</span><span class="p">;</span>
+
+    <span class="kd">var</span> <span class="nx">stats</span> <span class="o">=</span> <span class="p">{</span><span class="nx">fastCount</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">fastSumMs</span><span class="o">:</span> <span class="mi">0</span><span class="p">};</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+    
+      <span class="nx">renderFrame</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">time</span><span class="p">){</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">RF</span><span class="p">(</span><span class="nx">time</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+        <span class="nx">stats</span><span class="p">.</span><span class="nx">firstMs</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">()</span> <span class="o">-</span> <span class="nx">time</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">renderFrame</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">sumRF</span><span class="p">;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">rotCache</span><span class="p">);</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">rotCache</span><span class="p">){</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">rotCache</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">){</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">rotCache</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="nx">sumRF</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">time</span><span class="p">){</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">RF</span><span class="p">(</span><span class="nx">time</span><span class="p">);</span>
+        <span class="nx">stats</span><span class="p">.</span><span class="nx">fastSumMs</span> <span class="o">+=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">()</span> <span class="o">-</span> <span class="nx">time</span><span class="p">;</span>
+        <span class="nx">stats</span><span class="p">.</span><span class="nx">fastCount</span><span class="o">++</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">stats</span><span class="p">.</span><span class="nx">fastSumMs</span> <span class="o">&gt;</span> <span class="nx">stats</span><span class="p">.</span><span class="nx">firstMs</span><span class="p">)</span> <span class="p">{</span>
+</pre></div>             </td>           </tr>                               <tr id="section-27">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-27">&#182;</a>               </div>               <pre><code>  alert("calc:precompute ratio = 1:"+ stats.fastCount +" "+ stats.fastSumMs +" "+ stats.firstMs);
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>
+          <span class="k">this</span><span class="p">.</span><span class="nx">renderFrame</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">RF</span><span class="p">;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+
+
+    
+      <span class="nx">RF</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">time</span><span class="p">){</span>
+</pre></div>             </td>           </tr>                               <tr id="section-28">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-28">&#182;</a>               </div>               <p>RX, RY &amp; RZ may change part way through if the newR? (change tilt/turn) meathods are called while
+this meathod is running so put them in temp vars at render start.
+They also need converting from degrees to radians</p>             </td>             <td class="code">               <div class="highlight"><pre>
+      <span class="nx">rx</span><span class="o">=</span><span class="nx">RX</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">/</span><span class="mi">180</span><span class="p">;</span>
+      <span class="nx">ry</span><span class="o">=</span><span class="nx">RY</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">/</span><span class="mi">180</span><span class="p">;</span>
+      <span class="nx">rz</span><span class="o">=</span><span class="nx">RZ</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">/</span><span class="mi">180</span><span class="p">;</span>
+
+</pre></div>             </td>           </tr>                               <tr id="section-29">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-29">&#182;</a>               </div>               <p>add to 24<em>60</em>60 so it will be a day before turnBy is negative and it hits the slow negative modulo bug</p>             </td>             <td class="code">               <div class="highlight"><pre>
+      <span class="kd">var</span> <span class="nx">turnBy</span> <span class="o">=</span> <span class="mi">24</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span> <span class="o">+</span> <span class="nx">firstFramePos</span> <span class="o">-</span> <span class="nx">time</span> <span class="o">*</span> <span class="nx">posDelta</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">pixel</span> <span class="o">=</span> <span class="nx">size</span><span class="o">*</span><span class="nx">size</span><span class="p">;</span>
+
+      <span class="k">while</span><span class="p">(</span><span class="nx">pixel</span><span class="o">--</span><span class="p">){</span>
+        <span class="kd">var</span> <span class="nx">vector</span> <span class="o">=</span> <span class="nx">getVector</span><span class="p">(</span><span class="nx">pixel</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">vector</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">){</span>
+</pre></div>             </td>           </tr>                               <tr id="section-30">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-30">&#182;</a>               </div>               <p>rotate texture on sphere</p>             </td>             <td class="code">               <div class="highlight"><pre>
+          <span class="kd">var</span> <span class="nx">lh</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">vector</span><span class="p">.</span><span class="nx">lh</span> <span class="o">+</span> <span class="nx">turnBy</span><span class="p">)</span> <span class="o">%</span> <span class="nx">textureWidth</span><span class="p">;</span>
+<span class="cm">/*           lh = (lh &lt; 0) </span>
+<span class="cm">                ? ((textureWidth-1) - ((lh-1)%textureWidth)) </span>
+<span class="cm">                : (lh % textureWidth) ;</span>
+<span class="cm"> */</span>
+          <span class="kd">var</span> <span class="nx">idxC</span> <span class="o">=</span> <span class="nx">pixel</span> <span class="o">*</span> <span class="mi">4</span><span class="p">;</span>
+          <span class="kd">var</span> <span class="nx">idxT</span> <span class="o">=</span> <span class="p">(</span><span class="nx">lh</span> <span class="o">+</span> <span class="nx">vector</span><span class="p">.</span><span class="nx">lv</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span><span class="p">;</span>
+
+          <span class="cm">/* TODO light for alpha channel or alter s or l in hsl color value?</span>
+<span class="cm">            - fn to calc distance between two points on sphere?</span>
+<span class="cm">            - attenuate light by distance from point and rotate point separate from texture rotation</span>
+<span class="cm">          */</span>
+
+</pre></div>             </td>           </tr>                               <tr id="section-31">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-31">&#182;</a>               </div>               <p>Update the values of the pixel;</p>             </td>             <td class="code">               <div class="highlight"><pre>
+          <span class="nx">canvasData</span><span class="p">[</span><span class="nx">idxC</span> <span class="o">+</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nx">textureData</span><span class="p">[</span><span class="nx">idxT</span> <span class="o">+</span> <span class="mi">0</span><span class="p">];</span>
+          <span class="nx">canvasData</span><span class="p">[</span><span class="nx">idxC</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">textureData</span><span class="p">[</span><span class="nx">idxT</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+          <span class="nx">canvasData</span><span class="p">[</span><span class="nx">idxC</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nx">textureData</span><span class="p">[</span><span class="nx">idxT</span> <span class="o">+</span> <span class="mi">2</span><span class="p">];</span>
+          <span class="nx">canvasData</span><span class="p">[</span><span class="nx">idxC</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
+
+</pre></div>             </td>           </tr>                               <tr id="section-32">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-32">&#182;</a>               </div>               <p>Slower?</p>             </td>             <td class="code">               <div class="highlight"><pre>
+          <span class="cm">/*</span>
+<span class="cm">          canvasImageData.data[idxC + 0] = textureImageData.data[idxT + 0];</span>
+<span class="cm">          canvasImageData.data[idxC + 1] = textureImageData.data[idxT + 1];</span>
+<span class="cm">          canvasImageData.data[idxC + 2] = textureImageData.data[idxT + 2];</span>
+<span class="cm">          canvasImageData.data[idxC + 3] = 255;</span>
+<span class="cm">          */</span>
+</pre></div>             </td>           </tr>                               <tr id="section-33">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-33">&#182;</a>               </div>               <p>Faster?</p>             </td>             <td class="code">               <div class="highlight"><pre>
+          <span class="cm">/* copyFnc(idxC,idxT); */</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+      <span class="nx">gCtx</span><span class="p">.</span><span class="nx">putImageData</span><span class="p">(</span><span class="nx">canvasImageData</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="p">}};</span>
+  <span class="p">};</span>
+
+  <span class="kd">function</span> <span class="nx">copyImageToBuffer</span><span class="p">(</span><span class="nx">aImg</span><span class="p">)</span>
+  <span class="p">{</span>
+      <span class="nx">gImage</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;canvas&#39;</span><span class="p">);</span>
+      <span class="nx">textureWidth</span> <span class="o">=</span> <span class="nx">aImg</span><span class="p">.</span><span class="nx">naturalWidth</span><span class="p">;</span>
+      <span class="nx">textureHeight</span> <span class="o">=</span> <span class="nx">aImg</span><span class="p">.</span><span class="nx">naturalHeight</span><span class="p">;</span>
+      <span class="nx">gImage</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">textureWidth</span><span class="p">;</span>
+      <span class="nx">gImage</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nx">textureHeight</span><span class="p">;</span>
+
+      <span class="nx">gCtxImg</span> <span class="o">=</span> <span class="nx">gImage</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s2">&quot;2d&quot;</span><span class="p">);</span>
+      <span class="nx">gCtxImg</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">textureHeight</span><span class="p">,</span> <span class="nx">textureWidth</span><span class="p">);</span>
+      <span class="nx">gCtxImg</span><span class="p">.</span><span class="nx">drawImage</span><span class="p">(</span><span class="nx">aImg</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+      <span class="nx">textureImageData</span> <span class="o">=</span> <span class="nx">gCtxImg</span><span class="p">.</span><span class="nx">getImageData</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">textureHeight</span><span class="p">,</span> <span class="nx">textureWidth</span><span class="p">);</span>
+
+      <span class="nx">hs_ch</span> <span class="o">=</span> <span class="p">(</span><span class="nx">hs</span> <span class="o">/</span> <span class="nx">size</span><span class="p">);</span>
+      <span class="nx">vs_cv</span> <span class="o">=</span> <span class="p">(</span><span class="nx">vs</span> <span class="o">/</span> <span class="nx">size</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">this</span><span class="p">.</span><span class="nx">createSphere</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">gCanvas</span><span class="p">,</span> <span class="nx">textureUrl</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">size</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">gCanvas</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">gCanvas</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    <span class="nx">gCtx</span> <span class="o">=</span> <span class="nx">gCanvas</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s2">&quot;2d&quot;</span><span class="p">);</span>
+    <span class="nx">canvasImageData</span> <span class="o">=</span> <span class="nx">gCtx</span><span class="p">.</span><span class="nx">createImageData</span><span class="p">(</span><span class="nx">size</span><span class="p">,</span> <span class="nx">size</span><span class="p">);</span>
+
+    <span class="nx">ry</span><span class="o">=</span><span class="mi">90</span><span class="o">+</span><span class="nx">opts</span><span class="p">.</span><span class="nx">tilt</span><span class="p">;</span>
+    <span class="nx">rz</span><span class="o">=</span><span class="mi">180</span><span class="o">+</span><span class="nx">opts</span><span class="p">.</span><span class="nx">turn</span><span class="p">;</span>
+
+    <span class="nx">RY</span> <span class="o">=</span> <span class="p">(</span><span class="mi">90</span><span class="o">-</span><span class="nx">ry</span><span class="p">);</span>
+    <span class="nx">RZ</span> <span class="o">=</span> <span class="p">(</span><span class="mi">180</span><span class="o">-</span><span class="nx">rz</span><span class="p">);</span>
+
+    <span class="nx">hs_ch</span> <span class="o">=</span> <span class="p">(</span><span class="nx">hs</span> <span class="o">/</span> <span class="nx">size</span><span class="p">);</span>
+    <span class="nx">vs_cv</span> <span class="o">=</span> <span class="p">(</span><span class="nx">vs</span> <span class="o">/</span> <span class="nx">size</span><span class="p">);</span>
+
+    <span class="nx">V</span><span class="p">[</span><span class="nx">Y</span><span class="p">]</span><span class="o">=</span><span class="nx">f</span><span class="p">;</span>
+
+    <span class="nx">b</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="nx">f</span><span class="o">*</span><span class="nx">V</span><span class="p">[</span><span class="nx">Y</span><span class="p">]));</span>
+    <span class="nx">b2</span><span class="o">=</span><span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">img</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Image</span><span class="p">();</span>
+    <span class="nx">img</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">copyImageToBuffer</span><span class="p">(</span><span class="nx">img</span><span class="p">);</span>
+      <span class="kd">var</span> <span class="nx">earth</span> <span class="o">=</span> <span class="nx">sphere</span><span class="p">();</span>
+      <span class="kd">var</span> <span class="nx">renderAnimationFrame</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="cm">/* time */</span> <span class="nx">time</span><span class="p">){</span>
+          <span class="cm">/* time ~= +new Date // the unix time */</span>
+          <span class="nx">earth</span><span class="p">.</span><span class="nx">renderFrame</span><span class="p">(</span><span class="nx">time</span><span class="p">);</span>
+          <span class="nb">window</span><span class="p">.</span><span class="nx">requestAnimationFrame</span><span class="p">(</span><span class="nx">renderAnimationFrame</span><span class="p">);</span>
+      <span class="p">};</span>
+
+</pre></div>             </td>           </tr>                               <tr id="section-34">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-34">&#182;</a>               </div>               <p>BAD! uses 100% CPU, stats.js runs at 38FPS</p>             </td>             <td class="code">               <div class="highlight"><pre>
+      <span class="cm">/*</span>
+<span class="cm">      function renderFrame(){</span>
+<span class="cm">        earth.renderFrame(new Date);</span>
+<span class="cm">      }</span>
+<span class="cm">      setInterval(renderFrame, 0);</span>
+<span class="cm">      */</span>
+</pre></div>             </td>           </tr>                               <tr id="section-35">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-35">&#182;</a>               </div>               <p>Better - runs at steady state</p>             </td>             <td class="code">               <div class="highlight"><pre>
+      <span class="cm">/*</span>
+<span class="cm">      (function loop(){  </span>
+<span class="cm">        setTimeout(function(){  </span>
+<span class="cm">          earth.renderFrame(new Date);</span>
+<span class="cm">          loop();</span>
+<span class="cm">        }, 0);</span>
+<span class="cm">      })();  </span>
+<span class="cm">      */</span>
+</pre></div>             </td>           </tr>                               <tr id="section-36">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-36">&#182;</a>               </div>               <p>Best! only renders frames that will be seen. stats.js runs at 60FPS on my desktop</p>             </td>             <td class="code">               <div class="highlight"><pre>
+      <span class="nb">window</span><span class="p">.</span><span class="nx">requestAnimationFrame</span><span class="p">(</span><span class="nx">renderAnimationFrame</span><span class="p">);</span>
+
+    <span class="p">};</span>
+    <span class="nx">img</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;src&quot;</span><span class="p">,</span> <span class="nx">textureUrl</span><span class="p">);</span>
+  <span class="p">};</span>
+<span class="p">}).</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
