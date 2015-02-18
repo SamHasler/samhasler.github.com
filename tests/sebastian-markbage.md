@@ -77,8 +77,11 @@ Never abstract until it actually causes bugs.
 Once it does cause a bug, add an abstraction but remove as as much surface area as you add to it.
 
 >   1) Slow moving [standards committees].
+>
 >   2) Spaghetti code.
+>
 >   3) Almost never add sugar.
+>
 >   4) Burn as much as you add.
 
 This doesn't sound like best practices at all, and no one wants to listen to slow moving standards orgs.
@@ -169,7 +172,9 @@ It avoids bike shedding, bike shedding is the biggest waste of time of all.
 We leave that to standard mailing lists.
 
 >   "Authority is best applied on the simplest and least important decisions."
+>
 >     Not the most important
+>
 >           - me
 
 It reminds me the least intuitive lessons I learned from a large organization: top‑down authority is best used on the very least important decisions, not the most important decisions.
@@ -191,9 +196,13 @@ The person coming to fix your code does haven't to know about your obscure funct
 This can be really annoying to have all this repetitive code that looks ugly when we all want beautiful code, right.
 
 >   "This process fundamentally has no end, ever.
+>
 >    We are simply never going to realize a state of software nirvana
+>
 >    where everything is supremely satisfying.
+>
 >    That's an important emotional realization."
+>
 >      - Mark Slee
 
 Except, this process fundamentally has no end, ever.
@@ -234,6 +243,7 @@ It's really like Fettuccine code.
 ##### Fettuccine Code [14:38]
 
 >   Few abstractions.
+>
 >   Lots of repetition.
 
 
@@ -289,6 +299,7 @@ In theory web components and similar efforts can actually work on standardizing 
 ##### Remove As Much Complexity As You Add [17:30]
 
 >   Reclaim surface area for the next problem
+>
 >     (e.g. domain specific problems)
 
 Except, they don't actually remove as much as they add.
@@ -381,6 +392,7 @@ Because the standard represents an intermediate representation that can be share
 Now think about that for a minute, React already has a small surface area, but we're actively removing proprietary features from the framework.
 
 >   "We are not paid to use every feature of the language.
+>
 >    We are paid to write reliable and simple software." - Douglas Crockford
 
 Now, just because you should mostly use standard language, it doesn't mean you have to use all of it.
@@ -394,8 +406,11 @@ I mean they'll never be removed from the web, because you can't remove things fr
 ##### JS on a Diet
 
 >   1) Slow moving standards.     Use polyfills instead of libs.
+>
 >   2) Spaghetti code.            Explicit repetitive code.
+>
 >   3) Almost never add sugar.    Only abstract to solve bugs.
+>
 >   4) Burn as much as you add.   Rethink the stack and purge.
 
 So, let's put JS on a diet.
