@@ -1,6 +1,6 @@
 ##### Sebastian Markbåge
 
-   React / TC-39 / Facebook
+>   React / TC-39 / Facebook
 
 I'm Sebastian, that thing there is my last name.
 
@@ -12,7 +12,7 @@ Don't worry, the bad parts are not mine, they're someone else's.
 
 ##### What's your favorite library?
 
-   Do you use it in all your JavaScript code?
+>   Do you use it in all your JavaScript code?
 
 I guess a lot of people here have a favorite library.
 You there, what's your favorite library? nothing? React? that's a good call.
@@ -43,7 +43,7 @@ How streamlined?
 
 ##### Learning JS is hard
 
-   working with JS is hard
+>   working with JS is hard
 
 JavaScript these days is really hard to learn.
 Imagine this is like the first day and you get dropped into the code based complicated weapon App, in the middle of the web App, first day you have no idea how it works how many calls in to JavaScript libraries do you see that you've never seen before.
@@ -52,14 +52,14 @@ Imagine this is the life of thousands of your colleagues.
 ##### _.each([], fn)
 #####      is
 ##### [].forEach(fn)
-      ?
+#####      ?
 
 We had our own core libraries at Facebook as well.
 One of the most common questions we had was so which Facebook specific module corresponds to this underscore or JQue arey function? 
 
-##### Your Library is Fat
+##### Your Library is Ft
 
-   The accumulated surface area is too wide.
+>   The accumulated surface area is too wide.
 
 It's not that the library is too big, the library is pretty cool.
 It doesn't matter if there's too many bytes, there's way to optimize and filter those, it's actually total amount of APIs that you have to learn to be productive in this industry.
@@ -76,17 +76,17 @@ Then write some spaghetti code.
 Never abstract until it actually causes bugs.
 Once it does cause a bug, add an abstraction but remove as as much surface area as you add to it.
 
-   1) Slow moving [standards committees].
-   2) Spaghetti code.
-   3) Almost never add sugar.
-   4) Burn as much as you add.
+>   1) Slow moving [standards committees].
+>   2) Spaghetti code.
+>   3) Almost never add sugar.
+>   4) Burn as much as you add.
 
 This doesn't sound like best practices at all, and no one wants to listen to slow moving standards orgs.
 Let me get back to that a little bit later.
 
 ##### IE 2005
 
-   The Mad Max era of web development.
+>   The Mad Max era of web development.
 
 First, some history.
 This is back to 2005, late 2005.
@@ -126,7 +126,7 @@ It's not best language in the world, whatever your favorite style is, there's at
 We can just use that instead, right?
 
 
-   Because
+>   Because
 
 ##### JavaScript is ubiquitous
 
@@ -147,7 +147,7 @@ So back at Facebook we started building source trance filers for ES6 features, w
 There are some problems with this technique though, there's some native functions that are slower than the reimplementation of them, loadash shows this over and over again.
 
 ##### Just monkey patch it
-   It's what makes JavaScript upgradable
+>   It's what makes JavaScript upgradable
 
 It's easy to solve, just monkey patch it, just ovewrite a native version with one that's faster, this is actually one of the strengths of JavaScript that you can actually do this.
 Sometimes, don't tell anyone, but you can actually use Shams as well that are not quite compatible just to get the extra little performance boost, just make sure you're continuously try to follow the standards as it's moving along and also try to not expose dependencies on non‑standard behavior.
@@ -160,7 +160,7 @@ In the early days of a spec, the spec changes a lot, you basically have to live 
 And all of this stuff is really difficult to get right, but we, and a lot of our people are trying to build Open Source tooling, to support your environment or stack to actually enable you do this.
 
 ##### One JavaScript
-   No Bikeshedding
+>   No Bikeshedding
 
 And this is all hard work, but it allows us to have a very simple story, at Facebook, we use JavaScript's standards library.
 There's one way to do things, and it's the standard way.
@@ -168,9 +168,9 @@ And it's it avoids a very simple problem.
 It avoids bike shedding, bike shedding is the biggest waste of time of all.
 We leave that to standard mailing lists.
 
-   "Authority is best applied on the simplest and least important decisions."
-     Not the most important
-           - me
+>   "Authority is best applied on the simplest and least important decisions."
+>     Not the most important
+>           - me
 
 It reminds me the least intuitive lessons I learned from a large organization: top‑down authority is best used on the very least important decisions, not the most important decisions.
 For example I really recommend you enforce a strict and comprehensive style guide just because it avoids this discussion on every of pull request or every diff, which style you're going to use and every person isn't going to have to fight to get their style.
@@ -184,17 +184,17 @@ But you might be asking yourself, JavaScript standard library doesn't have all f
 Well, often the answer is just write some more boilerplate code.
 
 ##### Make your own stupid filter function
-   Why libraries are stupid
+>   Why libraries are stupid
 
 It'll take you a few seconds longer, you don't take on dependency.
 The person coming to fix your code does haven't to know about your obscure function and to pointing out their version with the same or different names that someone else thought was better, and better looking.
 This can be really annoying to have all this repetitive code that looks ugly when we all want beautiful code, right.
 
-   "This process fundamentally has no end, ever.
-    We are simply never going to realize a state of software nirvana
-    where everything is supremely satisfying.
-    That's an important emotional realization."
-      - Mark Slee
+>   "This process fundamentally has no end, ever.
+>    We are simply never going to realize a state of software nirvana
+>    where everything is supremely satisfying.
+>    That's an important emotional realization."
+>      - Mark Slee
 
 Except, this process fundamentally has no end, ever.
 We're simply never going to realize state of software nirvana where everything is supremely satisfying.
@@ -233,8 +233,8 @@ It's really like Fettuccine code.
 
 ##### Fettuccine Code [14:38]
 
-   Few abstractions.
-   Lots of repetition.
+>   Few abstractions.
+>   Lots of repetition.
 
 
 Have you ever lived with like a large app that was built on the wrong framework?
@@ -258,7 +258,7 @@ But once it starts causing bugs then it becomes a problem because it's repetitio
 
 ##### Generalize
 
-   Make it worth it's weight
+>   Make it worth it's weight
 
 You create an abstraction, but make sure the abstraction can be used for wide variety of use cases because it has to make it worth it's weight.
 It might even be subject for standardtion if it's general enough.
@@ -288,8 +288,8 @@ In theory web components and similar efforts can actually work on standardizing 
 
 ##### Remove As Much Complexity As You Add [17:30]
 
-   Reclaim surface area for the next problem
-     (e.g. domain specific problems)
+>   Reclaim surface area for the next problem
+>     (e.g. domain specific problems)
 
 Except, they don't actually remove as much as they add.
 The surface area of these frameworks, these paradigms, it's huge, there's a lot of things you have to learn.
@@ -298,7 +298,7 @@ And that continues to be the case even when it's standardized.
 But, with this paradigm it's all necessary.
 And that's what tends to happen when you keep building straight on top of existing ideas.
 
-   "Facebook: Rethink established best practices™" - Ben Alman
+>   "Facebook: Rethink established best practices™" - Ben Alman
 
 So, sometimes just have to rethink the whole stack.
 Come up with a smaller surface area.
@@ -326,7 +326,7 @@ But the surface area that you have to face as a developer to know and understand
 
 ##### Enough with the sales pitch, Sebastian
 
-   What's the downside?
+>   What's the downside?
 
 You can build an incredibly complex App like this, we did and up until this point it sounds pretty good, right.
 But nothing is free.
@@ -341,7 +341,7 @@ For example in many cases we get request for implicit bubbling of events because
 
 ##### Cool abstraction, bro
 
-   Are you sure it solves more problems than it causes?
+>   Are you sure it solves more problems than it causes?
 
 It's really difficult to follow code that depends on implicit bubbling of events, because it means that if either side ever disappears, you don't know where it disappeared, let's say one caller disappears from your stack and later we realize that actually that led to a bug that we didn't anticipate, how do you find that?
 Do you have to go through I have component and the history of every component or abstraction along the way to find where that happened?
@@ -358,7 +358,7 @@ And we take new abstractions in React very, very seriously, while you have to li
 
 ##### React.createClass
 
-   Oops
+>   Oops
 
 We make mistakes too, of course.
 
@@ -376,12 +376,12 @@ Because the standard represents an intermediate representation that can be share
 
 ##### Remove Features
 
-   When there are any alternatives
+>   When there are any alternatives
 
 Now think about that for a minute, React already has a small surface area, but we're actively removing proprietary features from the framework.
 
-  "We are not paid to use every feature of the language.
-   We are paid to write reliable and simple software." - Douglas Crockford
+>   "We are not paid to use every feature of the language.
+>    We are paid to write reliable and simple software." - Douglas Crockford
 
 Now, just because you should mostly use standard language, it doesn't mean you have to use all of it.
 So, JavaScript already has a huge surface area and if you want to keep adding more stuff to it, then we have to remove something, because otherwise it will just keep growing and our industry will run out of head space, or whatever.
@@ -393,10 +393,10 @@ I mean they'll never be removed from the web, because you can't remove things fr
 
 ##### JS on a Diet
 
-   1) Slow moving standards.     Use polyfills instead of libs.
-   2) Spaghetti code.            Explicit repetitive code.
-   3) Almost never add sugar.    Only abstract to solve bugs.
-   4) Burn as much as you add.   Rethink the stack and purge.
+>   1) Slow moving standards.     Use polyfills instead of libs.
+>   2) Spaghetti code.            Explicit repetitive code.
+>   3) Almost never add sugar.    Only abstract to solve bugs.
+>   4) Burn as much as you add.   Rethink the stack and purge.
 
 So, let's put JS on a diet.
 Use polyfills instead of libraries, write explicit and repetitive code, only abstract to actually solve bugs, not because it looks better.
