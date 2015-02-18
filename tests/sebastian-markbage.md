@@ -54,7 +54,7 @@ Imagine this is the life of thousands of your colleagues.
 We had our own core libraries at Facebook as well.
 One of the most common questions we had was so which Facebook specific module corresponds to this underscore or JQue arey function? 
 
-> ##### Your Library is Ft
+> ##### Your Library is Fat
 >   The accumulated surface area is too wide.
 
 It's not that the library is too big, the library is pretty cool.
