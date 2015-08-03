@@ -9,64 +9,77 @@
       width: 640px;
       margin: 0 auto;
     }
-    .avatar {
+      header {
+        text-align: center;
+      }
+        .avatar {
+          border-radius: 6px;
+        }
+        .identity {
+          display: inline-block;
+          
+          margin: 20px 10px 0 0;
+          border: 1px dashed lightgrey;
+          padding: 9px;
+          
+          font-size: 75%;
+        }
+          .identity h3 {  margin-top: 0;  }      
+          .identity ul{  padding: 0;  }
+          .identity li{  list-style-type: none;  }
+      
+            a[href^="https://github.com/"] {
+              background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACWUlEQVQ4T42TT2jTUBzH85L3uqRN2yTtdF4sXsSDkx0UnOAou6qoR5kehji9etCLePXgyZM6FBT/4EEExYsnxQ2ZoOB5CBt6mdA1f9Y0afOSxu+r7YhDioFHfu+93+/z+/uItOPTdX2GMXYuTdNZRZL2iOtEkjYIIe855y9831/KmpDMRqkYxiPK2IWd0Ow+5vxp03Xn/3AlaQhQLMtaZooyPcp4eMeTZMW27eMC0gfA8zN4nos4X+p0u9fCMDyRz+fnNMZicZ/Kcs12nJsQl03DuJ1jbAaRPEck54mmaUdLur4iFKM4XnQc5wpEHauHFQy8in1bsEzTvJ+j9LI43/L9aQLvT4Z5t9rtI0EQfB2VBopcL2jaB6Ej6kGQ+xpy3xcnSdQOggOdTmd9FEBV1RqiXkUUY6jFOrFMM2SUqnGv97PZbNb+p4iVSuUHleW9PI47AhAAoAHgAWANch/FkSuW5VBFKQEQEsMwVscY2y8supyfcV33zSjrYrF4Mq+qbwf630nVsh4SWb7Y2NxMjFIpTTivt8Lw078gRU07xlT1FSKeGHTtASkUClNUpt+8lhfh0Jdl2cIYhyjWLObhs1CklNaTJHm5q1qtZsF+EBzqDxJ6u4iqLrQbjckUQEAuYc17nrcm7jFUh3O53Bekum2PDtzBNF7dfguYsI8wmuyl6RSGaQuabsZbEcX+hdDzg/6/xhSeFXL2MUloz10pTRdw7jVt+yD+GwPIxO7x8b4cRdEtx/NuDOF/AfrplMvXiaKcRninsLXFWblcNikhj3uEvEN097J1+A2EPvXHIz0MvAAAAABJRU5ErkJggg==");
+          }
+            a[href^="http://stackoverflow.com/"] {
+              background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABiElEQVQ4T2NkIAF8qdf99JfxXxh/w9UdMG2MhPR/bJfx4Hv85AjjNIYvnxp0NzIyMhjw1l+WJ9qArx0y5xkYmGTe/figLvOK/dcXMfEPDP8YonmbrqwEGYLTBZcnGOnpFpy79D+Uge2LidxVpv8MAiBDBBnl+xgY/nnz1F8VxWvAtYnG74A2/2RkYPLROHLyMtCQ60wMDPxfPv7Q5mIXf8Tw738pb+OVSThdsApos46t6db/DAxOjP8ZFmseOZ0GNUTw3w+eRf//MXHwNV7JwGrAqlWhbGFhq3+BnHh1opEHAyPTSsb////+//MvVOH320KgV+JkGz4BXYgjDA5ODfr9////zwz/Gc/+Z/g7xzF348qrk81W/f/3V10n/6w+cszhdIH4qz+F//8zBjAyMRj+Z/jPCtR0xSF7PYpmDBc0Nbf9r6utwjD08LRQ4z//fzs4Zm/oRVeDohgmuaKnABh2mCCiZAIjUQbgS51EGQBShM0QkPeIMoAiFxDKXCB55IAmmBsJGQgAWVK9ES/katIAAAAASUVORK5CYII=");
+            }
+            a[href^="http://careers.stackoverflow.com/"] {
+              background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAXklEQVQ4T2NkoBAwUqifgWwDPhcq/QdZPsQM+NAIcbZA/T1GsrwwMAYcqdcGO9um8SojWS4gy4AtnS5gW33K9zDSz4AFzRlgWxNqZzCS5IKCgsL/Eyb0Mw6cAZTmRgDBEYzSn5u30gAAAABJRU5ErkJggg==");
+            }
+            .identity a {
+               padding-left: 20px;
+               background-repeat:  no-repeat;
+            }
+          .identity li {
+            margin-bottom: 3px;
+          }
+    H2 {clear: both;}
+    .article-img {
+      float: left;
+      margin-right: 1em;
+      border: 1px solid #F1F1F1;
       border-radius: 6px;
     }
-    .identity {
-      display: inline-block;
-      
-      margin: 20px 10px 0 0;
-      border: 1px dashed lightgrey;
-      padding: 9px;
-      
-      font-size: 75%;
+    article p {
+      line-height: 1.3;
     }
-    .identity h3 {  margin-top: 0;  }      
-    .identity ul{  padding: 0;  }
-    .identity li{  list-style-type: none;  }
-
-      a[href^="https://github.com/"] {
-        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACWUlEQVQ4T42TT2jTUBzH85L3uqRN2yTtdF4sXsSDkx0UnOAou6qoR5kehji9etCLePXgyZM6FBT/4EEExYsnxQ2ZoOB5CBt6mdA1f9Y0afOSxu+r7YhDioFHfu+93+/z+/uItOPTdX2GMXYuTdNZRZL2iOtEkjYIIe855y9831/KmpDMRqkYxiPK2IWd0Ow+5vxp03Xn/3AlaQhQLMtaZooyPcp4eMeTZMW27eMC0gfA8zN4nos4X+p0u9fCMDyRz+fnNMZicZ/Kcs12nJsQl03DuJ1jbAaRPEck54mmaUdLur4iFKM4XnQc5wpEHauHFQy8in1bsEzTvJ+j9LI43/L9aQLvT4Z5t9rtI0EQfB2VBopcL2jaB6Ej6kGQ+xpy3xcnSdQOggOdTmd9FEBV1RqiXkUUY6jFOrFMM2SUqnGv97PZbNb+p4iVSuUHleW9PI47AhAAoAHgAWANch/FkSuW5VBFKQEQEsMwVscY2y8supyfcV33zSjrYrF4Mq+qbwf630nVsh4SWb7Y2NxMjFIpTTivt8Lw078gRU07xlT1FSKeGHTtASkUClNUpt+8lhfh0Jdl2cIYhyjWLObhs1CklNaTJHm5q1qtZsF+EBzqDxJ6u4iqLrQbjckUQEAuYc17nrcm7jFUh3O53Bekum2PDtzBNF7dfguYsI8wmuyl6RSGaQuabsZbEcX+hdDzg/6/xhSeFXL2MUloz10pTRdw7jVt+yD+GwPIxO7x8b4cRdEtx/NuDOF/AfrplMvXiaKcRninsLXFWblcNikhj3uEvEN097J1+A2EPvXHIz0MvAAAAABJRU5ErkJggg==");
-    }
-      a[href^="http://stackoverflow.com/"] {
-        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABiElEQVQ4T2NkIAF8qdf99JfxXxh/w9UdMG2MhPR/bJfx4Hv85AjjNIYvnxp0NzIyMhjw1l+WJ9qArx0y5xkYmGTe/figLvOK/dcXMfEPDP8YonmbrqwEGYLTBZcnGOnpFpy79D+Uge2LidxVpv8MAiBDBBnl+xgY/nnz1F8VxWvAtYnG74A2/2RkYPLROHLyMtCQ60wMDPxfPv7Q5mIXf8Tw738pb+OVSThdsApos46t6db/DAxOjP8ZFmseOZ0GNUTw3w+eRf//MXHwNV7JwGrAqlWhbGFhq3+BnHh1opEHAyPTSsb////+//MvVOH320KgV+JkGz4BXYgjDA5ODfr9////zwz/Gc/+Z/g7xzF348qrk81W/f/3V10n/6w+cszhdIH4qz+F//8zBjAyMRj+Z/jPCtR0xSF7PYpmDBc0Nbf9r6utwjD08LRQ4z//fzs4Zm/oRVeDohgmuaKnABh2mCCiZAIjUQbgS51EGQBShM0QkPeIMoAiFxDKXCB55IAmmBsJGQgAWVK9ES/katIAAAAASUVORK5CYII=");
-      }
-      a[href^="http://careers.stackoverflow.com/"] {
-        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAXklEQVQ4T2NkoBAwUqifgWwDPhcq/QdZPsQM+NAIcbZA/T1GsrwwMAYcqdcGO9um8SojWS4gy4AtnS5gW33K9zDSz4AFzRlgWxNqZzCS5IKCgsL/Eyb0Mw6cAZTmRgDBEYzSn5u30gAAAABJRU5ErkJggg==");
-      }
-      .identity a {
-         padding-left: 20px;
-         background-repeat:  no-repeat;
-      }
-    .identity li {
-      margin-bottom: 3px;
-    }
-
-    H2 {clear: both;}
   </style>
 </HEAD>
 
 <BODY>
   <main role="main">
-    <span class="avatar">
-      <img src="https://avatars0.githubusercontent.com/u/54277?v=3&s=256" width="256" height="256">
-    </span>
-    <H1>Sam Hasler's Info</H1>
-    <div class="identity">
-      <h3>me on the web</h3>
-      <ul>
-        <li><a rel="me" href="https://github.com/SamHasler">Github</a></li>
-        <li><a rel="me" href="http://stackoverflow.com/users/2541">Stackoverflow Account</a></li>
-        <li><a rel="me" href="http://careers.stackoverflow.com/sam-hasler">Stackoverflow CV</a></li>
-        
-      </ul>
-    </div>
-    
-    <h2>JavaScript rendering of Sphere to Canvas Element</h2>
-    <img src="http://sam.haslers.info/render-sphere/JavaScript+Canvas.png" width="200" height="200" style="background:#000;">
-    <p>
-      I wrote a <a href="http://sam.haslers.info/render-sphere/JavaScript+Canvas.html">sphere renderer</a> in JavaScript that renders an image onto the surface of a perfect sphere rather than using triangles / geometry.
-    </p>
+    <header>
+      <span class="avatar">
+        <img src="https://avatars0.githubusercontent.com/u/54277?v=3&s=256" width="256" height="256">
+      </span>
+      <H1>Sam Hasler's Info</H1>
+      <div class="identity">
+        <h3>me on the web</h3>
+        <ul>
+          <li><a rel="me" href="https://github.com/SamHasler">Github</a></li>
+          <li><a rel="me" href="http://stackoverflow.com/users/2541">Stackoverflow Account</a></li>
+          <li><a rel="me" href="http://careers.stackoverflow.com/sam-hasler">Stackoverflow CV</a></li>
+        </ul>
+      </div>
+    </header>
+    <article>
+      <h2>JavaScript rendering of Sphere to Canvas Element</h2>
+      <img class="article-img" src="http://sam.haslers.info/render-sphere/JavaScript+Canvas.png" width="200" height="200">
+      <p>
+        I wrote a <a href="http://sam.haslers.info/render-sphere/JavaScript+Canvas.html">sphere renderer</a> in JavaScript that renders an image onto the surface of a perfect sphere rather than using triangles / geometry.
+      </p>
+    </article>
 
     <div style="margin:6px;">
       <!-- 1x1 Narrow  White  Non Fiction  -- ><SCRIPT charset="utf-8" type="text/javascript" src="http://ws.amazon.co.uk/widgets/q?ServiceVersion=20070822&MarketPlace=GB&ID=V20070822/GB/amawid-21/8004/71272c40-c705-4acc-bc2e-a952a2211294"> </SCRIPT> <NOSCRIPT><A HREF="http://ws.amazon.co.uk/widgets/q?ServiceVersion=20070822&MarketPlace=GB&ID=V20070822%2FGB%2Famawid-21%2F8004%2F71272c40-c705-4acc-bc2e-a952a2211294&Operation=NoScript">Amazon.co.uk Widgets</A></NOSCRIPT><!-- -->
